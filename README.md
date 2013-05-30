@@ -10,14 +10,14 @@ Programming with _galaxy_ is a bit like programming with two different worlds:
 Galaxy gives you a simple API that lets you move between these two worlds. There are only two functions in this API:
 
 * `var genFn = galaxy.star(asyncFn, cbIndex)`  
-  This function converts an asynchronous function into a generator function.
-  `asyncFn` is the asynchronous function.
+  This function converts an asynchronous function into a generator function.  
+  `asyncFn` is the asynchronous function.  
   `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is assumed to be the last parameter of `asyncFn`.
 
 * `var asyncFn = galaxy.unstar(genFn, cbIndex)`  
-  This function converts in the other direction. It allows you to turn a generator function into an asynchronous function.   
+  This function converts in the other direction. It allows you to turn a generator function into an asynchronous function.  
   `genFn` is the generator function.  
-  `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`
+  `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`.
 
  You can also pass a module rather than an individual function to these calls. In this case the functions will return a new module in which all the functions have been _starred_/_unstarred_ (skipping `Sync` call).
 
