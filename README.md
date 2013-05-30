@@ -150,7 +150,7 @@ Also, this is just a first brew of the galaxy project and I did not have time to
 
 ## More info
 
-This design is strongly inspired from bits and pieces of [streamline.js](https://github.com/Sage/streamlinejs). The following blog articles are not completely aligned on `galaxy` but they give a bit of background:
+This design is strongly inspired from bits and pieces of [streamline.js](https://github.com/Sage/streamlinejs). The following blog articles are a bit old and not completely aligned on `galaxy` but they give a bit of background:
 
 * [an early experiment with generators](http://bjouhier.wordpress.com/2012/05/18/asynchronous-javascript-with-generators-an-experiment/).
 * [futures = currying the callback](http://bjouhier.wordpress.com/2011/04/04/currying-the-callback-or-the-essence-of-futures/)
