@@ -1,0 +1,14 @@
+{
+  "name": "galaxy",
+  "description": "Celestial harmony between callbacks and generators",
+  "version": "0.1.0a",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bjouhier/galaxy.git"
+  },
+  "engines": { "node": ">=0.11.2" },
+  "dependencies": {},
+  "author": "Bruno Jouhier",
+  "directories": {"lib": "./lib" },
+  "main": "index.js"
+}
