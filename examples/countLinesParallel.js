@@ -15,18 +15,18 @@ function* countLinesStar(path) {
 	return total;
 }
 
-function* projectLineCountsStar() {
-	var total = 0;
-	total += yield countLinesStar(__dirname + '/../examples');
-	total += yield countLinesStar(__dirname + '/../lib');
-	total += yield countLinesStar(__dirname + '/../test');
+function* projectLineCountsParallelStar() {
+ 	var countLinesCb = galaxy.unstar(countLinesStar);
+ 	var future1 = countLinesCb(__dirname + '/../examples');
+ 	var future2 = countLinesCb(__dirname + '/../lib');
+	var future3 = countLinesCb(__dirname + '/../test');
+ 	var total = (yield future1()) + (yield future2()) + (yield future3());
+ 	console.log("after total")
 	console.log('TOTAL: ' + total);
-	return total;
+	return total; 
 }
 
-var projectLineCountsCb = galaxy.unstar(projectLineCountsStar);
-
-projectLineCountsCb(function(err, result) {
+galaxy.unstar(projectLineCountsParallelStar)(function(err, result) {
 	if (err) throw err;
-	console.log('CALLBACK RESULT: ' + result);
-});
+	console.log('CALLBACK RESULT: ' + result);	
+})
