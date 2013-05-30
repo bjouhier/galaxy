@@ -1,6 +1,6 @@
 Galaxy bridges the gap between node.js callback based APIs and EcmaScript 6 generators. It makes it easy to write node.js code in sync style thanks to ES6 generators.
 
-# API
+## API
 
 Programming with _galaxy_ is a bit like programming with two different worlds:
 
@@ -23,7 +23,7 @@ Galaxy gives you a simple API that lets you move between these two worlds. There
 
 The naming is a bit spacey but should be easy to remember: the `star` function turns a `function` into a `function*`; it adds a star. The `unstar` function goes in the other direction; it removes the star.
 
-# Quick walk through
+## Quick walk through
 
 The first thing you have to do is transform the asynchronous functions that you are going to call into generator functions. 
 
@@ -78,7 +78,7 @@ projectLineCountsCb(function(err, result) {
 });
 ```
 
-# Parallelizing
+## Parallelizing
 
 Kinda cool so far! But your generator functions are completely sequential. Would be nice to be able to parallelize them.
 
@@ -108,13 +108,13 @@ galaxy.unstar(projectLineCountsParallelStar)(function(err, result) {
 });
 ```
 
-# Installation
+## Installation
 
 ```
 npm install galaxy
 ```
 
-# Gotchas
+## Gotchas
 
 Generators have been added very recently to V8. To use them you need to:
 
@@ -131,14 +131,14 @@ $ node --harmony examples/countLines
 
 Also, this is just a first brew of the galaxy project and I did not have time to test much. So be ready for some bugs. But the foundation should be pretty solid.
 
-# More info
+## More info
 
 This design is strongly inspired from early designs related to the [streamline.js tool](https://github.com/Sage/streamlinejs):
 
 * [an early experiment with generators](http://bjouhier.wordpress.com/2012/05/18/asynchronous-javascript-with-generators-an-experiment/).
 * [futures = currying the callback](http://bjouhier.wordpress.com/2011/04/04/currying-the-callback-or-the-essence-of-futures/)
 
-# License
+## License
 
 This work is licensed under the [MIT license](http://en.wikipedia.org/wiki/MIT_License).
 
