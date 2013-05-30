@@ -81,13 +81,14 @@ So, for example, we can parallelize the `projectLineCount` operation by rewritin
 ``` javascript
 function* projectLineCountsParallelStar() {
  	var countLinesCb = galaxy.unstar(countLinesStar);
-	var future1 = countLinesCb(__dirname + '/../examples');
-	var future2 = countLinesCb(__dirname + '/../examples');
-	var future3 = countLinesCb(__dirname + '/../examples');
-	var total = (yield future1) + (yield future2) + (yield future3);
+ 	var future1 = countLinesCb(__dirname + '/../examples');
+ 	var future2 = countLinesCb(__dirname + '/../lib');
+	var future3 = countLinesCb(__dirname + '/../test');
+ 	var total = (yield future1()) + (yield future2()) + (yield future3());
 	console.log('TOTAL: ' + total);
 	return total; 
 }
+
 ```
 
 Now you can call this parallel function as:
@@ -112,6 +113,7 @@ For example, to run the example above:
 $ node -v
 v0.11.2
 $ node --harmony examples/countLines
+```
 
 Also, this is just a first brew of the galaxy project and I did not have time to test much. So be ready for some bugs. But the foundation should be pretty solid.
 

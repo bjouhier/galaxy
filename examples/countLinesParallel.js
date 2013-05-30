@@ -21,7 +21,6 @@ function* projectLineCountsParallelStar() {
  	var future2 = countLinesCb(__dirname + '/../lib');
 	var future3 = countLinesCb(__dirname + '/../test');
  	var total = (yield future1()) + (yield future2()) + (yield future3());
- 	console.log("after total")
 	console.log('TOTAL: ' + total);
 	return total; 
 }
