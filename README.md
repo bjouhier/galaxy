@@ -19,9 +19,9 @@ Galaxy gives you a simple API that lets you move between these two worlds. There
   `genFn` is the generator function.  
   `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`.
 
- You can also pass a module rather than an individual function to these calls. In this case the functions will return a new module in which all the functions have been _starred_/_unstarred_ (skipping `Sync` call).
+ You can also pass a module rather than an individual function to these calls. In this case the functions will return a new module in which all the functions have been _starred/unstarred_ (skipping `Sync` call).
 
-The naming is a bit spacey but should be easy to remember: the `star` function turns a `function` into a `function*`; it adds a star. The `unstar` function goes in the other direction; it removes the star.
+The naming is a bit spacey but should be easy to remember: the `star` function turns a `function` into a `function*`; it adds the star. The `unstar` function goes in the other direction; it removes the star.
 
 ## Quick walk through
 
@@ -78,11 +78,18 @@ projectLineCountsCb(function(err, result) {
 });
 ```
 
+If you have written a library in sync style with generator functions, you can also make it available to developers who prefer the callback style by creating a modules that _unstars_ you API:
+
+``` javascript
+var galaxy = require('galaxy');
+module.exports = galaxy.unstar(require('my-gen-functions'));
+```
+
 ## Parallelizing
 
 Kinda cool so far! But your generator functions are completely sequential. Would be nice to be able to parallelize them.
 
-This is actually not very difficult: you can call _unstarred_ functions without a callback and when you do so you obtain a _future_. This future executes in parallel with other futures that you have created. And this future is returned as a parameterless generator. So you can yield on it to get the result of the computation.
+This is actually not very difficult: if you call _unstarred_ functions without a callback you obtain a _future_. This future executes in parallel with other futures that you have created. And this future is returned as a parameterless generator function. So you can _yield_ on it to get the result of the computation.
 
 So, for example, you can parallelize the `projectLineCount` operation by rewriting it as:
 
@@ -110,8 +117,18 @@ galaxy.unstar(projectLineCountsParallelStar)(function(err, result) {
 
 ## Installation
 
+``` sh
+$ npm install galaxy
 ```
-npm install galaxy
+
+Then you can try the examples:
+
+``` sh
+$ cd galaxy
+$ node --harmony examples/countLines
+... some output ...
+$ node --harmony examples/countLinesParallel
+... some output ...
 ```
 
 ## Gotchas
