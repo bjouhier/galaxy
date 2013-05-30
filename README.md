@@ -10,7 +10,7 @@ Programming with _galaxy_ is a bit like programming with two different worlds:
 Galaxy gives you a simple API that lets you move between these two worlds. There are only two functions in the `galaxy` module:
 
 * `var genFn = galaxy.star(asyncFn, cbIndex)`  
-  This function converts an asynchronous function into a generator function.  
+  This function turns an asynchronous function into a generator function.  
   `asyncFn` is the asynchronous function.  
   `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is assumed to be the last parameter of `asyncFn`.
 
@@ -19,7 +19,7 @@ Galaxy gives you a simple API that lets you move between these two worlds. There
   `genFn` is the generator function.  
   `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`.
 
-You can also pass a module rather than an individual function to these calls. In this case the functions will return a new module in which all the functions have been _starred/unstarred_ (skipping `Sync` call).
+You can also pass a module rather than an individual function to these calls. In this case the functions return a new module in which all the functions have been _starred/unstarred_ (skipping `Sync` calls).
 
 The naming is a bit spacey but should be easy to remember: the `star` function turns a `function` into a `function*`; it adds the star. The `unstar` function goes in the other direction; it removes the star.
 
@@ -87,7 +87,7 @@ module.exports = galaxy.unstar(require('my-gen-functions'));
 
 ## Parallelizing
 
-Kinda cool so far! But your generator functions are completely sequential. Would be nice to be able to parallelize them.
+Kinda cool so far! But the generator functions that we just created are completely sequential. Would be nice to be able to parallelize them.
 
 This is actually not very difficult: if you call _unstarred_ functions without a callback you obtain a _future_. This future executes in parallel with other futures that you have created. And this future is returned as a parameterless generator function. So you can _yield_ on it to get the result of the computation.
 
@@ -150,7 +150,7 @@ Also, this is just a first brew of the galaxy project and I did not have time to
 
 ## More info
 
-This design is strongly inspired from bits and pieces of [streamline.js](https://github.com/Sage/streamlinejs):
+This design is strongly inspired from bits and pieces of [streamline.js](https://github.com/Sage/streamlinejs). The following blog articles are not completely aligned on `galaxy` but they give a bit of background:
 
 * [an early experiment with generators](http://bjouhier.wordpress.com/2012/05/18/asynchronous-javascript-with-generators-an-experiment/).
 * [futures = currying the callback](http://bjouhier.wordpress.com/2011/04/04/currying-the-callback-or-the-essence-of-futures/)
