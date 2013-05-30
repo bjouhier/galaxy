@@ -5,7 +5,7 @@ Galaxy bridges the gap between node.js callback based APIs and EcmaScript 6 gene
 Programming with _galaxy_ is a bit like programming with two different worlds:
 
 * The old world of asynchronous functions to which you pass _callbacks_. This is how most node.js APIs are designed. In this world you program in a callback-oriented async style.
-* A new world of _generator functions_ that you declare as `function*` rather than `function`. You don't pass callbacks to these functions. Instead, you call them with tbe `yield` operator. In this new world you program in sync style.
+* A new world of _generator functions_ that you declare as `function*` rather than `function`. You don't pass callbacks to these functions. Instead, you call them with the `yield` operator. In this new world you program in sync style.
 
 Galaxy gives you a simple API that lets you move between these two worlds. There are only two functions in the `galaxy` module:
 
@@ -36,7 +36,7 @@ var fsStar = galaxy.star(require('fs'));
 
 Now, you can write your own generator functions that call `fsStar` functions. All these calls _must_ be prefixed by a `yield` keyword. The cool part is that you don't need to worry about callbacks any more; you write your code as if all the functions that you are calling are synchronous.
 
-For example, you can write a function that displays the number of lines in all the files of a directory:
+For example, you can write a function that displays the number of lines of all the files in a directory:
 
 ``` javascript
 function* countLinesStar(path) {
@@ -124,7 +124,7 @@ $ npm install galaxy
 Then you can try the examples:
 
 ``` sh
-$ cd galaxy
+$ cd node_modules/galaxy
 $ node --harmony examples/countLines
 ... some output ...
 $ node --harmony examples/countLinesParallel
