@@ -1,19 +1,18 @@
 var galaxy = require('galaxy');
-var fs = require('fs');
-var readdirStar = galaxy.star(fs.readdir);
-var readFileStar = galaxy.star(fs.readFile);
+var fsStar = galaxy.star(require('fs'));
 
 function* countLinesStar(path) {
-	var names = yield readdirStar(path);
+	var names = yield fsStar.readdir(path);
 	var total = 0;
 	for (var i = 0; i < names.length; i++) {
 		var fullname = path + '/' + names[i];
-		var count = (yield readFileStar(fullname, 'utf8')).split('\n').length;
+		var count = (yield fsStar.readFile(fullname, 'utf8')).split('\n').length;
 		console.log(fullname + ': ' + count);
 		total += count;
 	}
 	return total;
 }
+
 
 function* projectLineCountsParallelStar() {
  	var countLinesCb = galaxy.unstar(countLinesStar);

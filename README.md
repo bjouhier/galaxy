@@ -1,44 +1,50 @@
 Galaxy bridges the gap between node.js callback based APIs and EcmaScript 6 generators. It makes it easy to write node.js code in sync style thanks to ES6 generators.
 
-Programming with galaxy is a bit like programming with two different worlds:
+# API
 
-* The world of _usual_ asynchronous functions to which you pass callbacks. This is how most node.js APIs are designed.
-* A new world of _generator_ functions that you declare as `function*` (_function star_) rather than as `function`. You don't pass callbacks to these functions. Instead, you call them with a special `yield` operator, as if they were synchronous.
+Programming with _galaxy_ is a bit like programming with two different worlds:
 
-Galaxy gives you a simple API that lets you move between these two worlds. There are only two functions:
+* The old world of asynchronous functions to which you pass _callbacks_. This is how most node.js APIs are designed. In this world you program in a callback-oriented async style.
+* A new world of _generator functions_ that you declare as `function*` rather than `function`. You don't pass callbacks to these functions. Instead, you call them with tbe `yield` operator, as if they were synchronous.
 
-* `var generator = galaxy.star(asyncFn, cbIndex)`  
-  This function converts a usual asynchronous function into a generator.
+Galaxy gives you a simple API that lets you move between these two worlds. There are only two functions in this API:
+
+* `var genFn = galaxy.star(asyncFn, cbIndex)`  
+  This function converts an asynchronous function into a generator function.
   `asyncFn` is the asynchronous function.
-  `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is assumed to be the last parameter.
+  `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is assumed to be the last parameter of `asyncFn`.
 
-* `var asyncFn = galaxy.unstar(generator, cbIndex)`  
-  This function converts in the other direction. It allows you to turn a generator into an asynchronous function.   
-  `asyncFn` is the generator.  
-  `cbIndex` is the index of the callback parameter. It is ptional. If omitted the callback is added at the end of the parameter list.
+* `var asyncFn = galaxy.unstar(genFn, cbIndex)`  
+  This function converts in the other direction. It allows you to turn a generator function into an asynchronous function.   
+  `genFn` is the generator function.  
+  `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`
 
-The first thing you have to do to work with galaxy is take the asynchronous functions that you are going to call and convert them to generators. 
+ You can also pass a module rather than an individual function to these calls. In this case the functions will return a new module in which all the functions have been _starred_/_unstarred_ (skipping `Sync` call).
 
-For example if you need to call `fs.readdir` and `fs.readFile`, you write:
+The naming is a bit spacey but should be easy to remember: the `star` function turns a `function` into a `function*`; it adds a star. The `unstar` function goes in the other direction; it removes the star.
+
+# Quick walk through
+
+The first thing you have to do is transform the asynchronous functions that you are going to call into generator functions. 
+
+For example if you plan to call functions from the `fs` module, you can write:
 
 ``` javascript
 var galaxy = require('galaxy');
-var fs = require('fs');
-var readdirStar = galaxy.star(fs.readdir);
-var readFileStar = galaxy.star(fs.readFile);
+var fsStar = galaxy.star(require('fs'));
 ```
 
-Now, you can write your own generator functions by calling `readdir` and `readFile` with `yield`. The cool part is that you don't need to worry about callbacks any more; you write your code as if the functions were synchronous.
+Now, you can write your own generator functions that call `fsStar` functions. All these calls _must_ be prefixed by a `yield` keyword. The cool part is that you don't need to worry about callbacks any more; you write your code as if all the functions that you are calling are synchronous.
 
-For example, we can write a generator function that displays the number of lines in all the files of a directory as:
+For example, you can write a function that displays the number of lines in all the files of a directory:
 
 ``` javascript
 function* countLinesStar(path) {
-	var names = yield readdirStar(path);
+	var names = yield fsStar.readdir(path);
 	var total = 0;
 	for (var i = 0; i < names.length; i++) {
 		var fullname = path + '/' + names[i];
-		var count = yield (readFileStar(fullname, 'utf8')).split('\n').length;
+		var count = (yield fsStar.readFile(fullname, 'utf8')).split('\n').length;
 		console.log(fullname + ': ' + count);
 		total += count;
 	}
@@ -46,7 +52,7 @@ function* countLinesStar(path) {
 }
 ```
 
-At this point you have created another generator function. You can continue coding in sync style. This is very easy: just write more generators. For example:
+Here, you have just created a generator function called `countLinesStar`. You can now continue coding in sync style: just write more generator functions. For example:
 
 ``` javascript
 function* projectLineCountsStar() {
@@ -59,7 +65,7 @@ function* projectLineCountsStar() {
 }
 ```
 
-This is all very nice and we can program very happily in the world of generator functions but how do we trigger the evaluation of these generators?
+This is all nice and you can now program happily with generator functions but there is at least one important question left: how do you run these generator functions?
 
 The answer is simple: just `unstar` them, and call them with a callback. For example:
 
@@ -72,11 +78,13 @@ projectLineCountsCb(function(err, result) {
 });
 ```
 
-Kinda cool! But our `Star` functions are completely sequential. How do we parallelize?
+# Parallelizing
 
-Easy again: if you call the _unstarred_ function without passing a callback, you obtain a _future_. This future executes in parallel with other futures that you may create. And this future _is_ rturned as a generator. So you can yield on it.
+Kinda cool so far! But your generator functions are completely sequential. Would be nice to be able to parallelize them.
 
-So, for example, we can parallelize the `projectLineCount` operation by rewriting it as:
+This is actually not very difficult: you can call _unstarred_ functions without a callback and when you do so you obtain a _future_. This future executes in parallel with other futures that you have created. And this future is returned as a parameterless generator. So you can yield on it to get the result of the computation.
+
+So, for example, you can parallelize the `projectLineCount` operation by rewriting it as:
 
 ``` javascript
 function* projectLineCountsParallelStar() {
@@ -100,6 +108,12 @@ galaxy.unstar(projectLineCountsParallelStar)(function(err, result) {
 });
 ```
 
+# Installation
+
+```
+npm install galaxy
+```
+
 # Gotchas
 
 Generators have been added very recently to V8. To use them you need to:
@@ -116,12 +130,6 @@ $ node --harmony examples/countLines
 ```
 
 Also, this is just a first brew of the galaxy project and I did not have time to test much. So be ready for some bugs. But the foundation should be pretty solid.
-
-# Installation
-
-```
-npm install galaxy
-```
 
 # More info
 
