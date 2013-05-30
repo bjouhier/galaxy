@@ -5,9 +5,9 @@ Galaxy bridges the gap between node.js callback based APIs and EcmaScript 6 gene
 Programming with _galaxy_ is a bit like programming with two different worlds:
 
 * The old world of asynchronous functions to which you pass _callbacks_. This is how most node.js APIs are designed. In this world you program in a callback-oriented async style.
-* A new world of _generator functions_ that you declare as `function*` rather than `function`. You don't pass callbacks to these functions. Instead, you call them with tbe `yield` operator, as if they were synchronous.
+* A new world of _generator functions_ that you declare as `function*` rather than `function`. You don't pass callbacks to these functions. Instead, you call them with tbe `yield` operator. In this new world you program in sync style.
 
-Galaxy gives you a simple API that lets you move between these two worlds. There are only two functions in this API:
+Galaxy gives you a simple API that lets you move between these two worlds. There are only two functions in the `galaxy` module:
 
 * `var genFn = galaxy.star(asyncFn, cbIndex)`  
   This function converts an asynchronous function into a generator function.  
