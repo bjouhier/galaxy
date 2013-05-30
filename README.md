@@ -19,7 +19,7 @@ Galaxy gives you a simple API that lets you move between these two worlds. There
   `genFn` is the generator function.  
   `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`.
 
- You can also pass a module rather than an individual function to these calls. In this case the functions will return a new module in which all the functions have been _starred/unstarred_ (skipping `Sync` call).
+You can also pass a module rather than an individual function to these calls. In this case the functions will return a new module in which all the functions have been _starred/unstarred_ (skipping `Sync` call).
 
 The naming is a bit spacey but should be easy to remember: the `star` function turns a `function` into a `function*`; it adds the star. The `unstar` function goes in the other direction; it removes the star.
 
@@ -78,7 +78,7 @@ projectLineCountsCb(function(err, result) {
 });
 ```
 
-If you have written a library in sync style with generator functions, you can also make it available to developers who prefer the callback style by creating a modules that _unstars_ you API:
+If you have written a library in sync style with generator functions, you can also make it available to developers who prefer the callback style by creating a module that _unstars_ your API:
 
 ``` javascript
 var galaxy = require('galaxy');
@@ -128,7 +128,7 @@ $ cd galaxy
 $ node --harmony examples/countLines
 ... some output ...
 $ node --harmony examples/countLinesParallel
-... some output ...
+... slightly different output  ...
 ```
 
 ## Gotchas
@@ -150,7 +150,7 @@ Also, this is just a first brew of the galaxy project and I did not have time to
 
 ## More info
 
-This design is strongly inspired from early designs related to the [streamline.js tool](https://github.com/Sage/streamlinejs):
+This design is strongly inspired from bits and pieces of [streamline.js](https://github.com/Sage/streamlinejs):
 
 * [an early experiment with generators](http://bjouhier.wordpress.com/2012/05/18/asynchronous-javascript-with-generators-an-experiment/).
 * [futures = currying the callback](http://bjouhier.wordpress.com/2011/04/04/currying-the-callback-or-the-essence-of-futures/)
