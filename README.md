@@ -65,6 +65,8 @@ function* projectLineCountsStar() {
 }
 ```
 
+Sounds familiar? It should if you have used `async/await` constructs in [other languages](http://msdn.microsoft.com/en-us/library/vstudio/hh191443.aspx). The `*` that follows the `function` keyword is your `async` marker and `yield` your `await` marker.
+
 This is all nice and you can now program happily with generator functions but there is at least one important question left: how do you run these generator functions?
 
 The answer is simple: just `unstar` them, and call them with a callback. For example:
