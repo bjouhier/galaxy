@@ -76,7 +76,7 @@ projectLineCountsCb(function(err, result) {
 });
 ```
 
-The `galaxy.unstar` call converts our `function*` into a regular node.js `function` that we call with a callback.
+The `galaxy.unstar` call converts our `function*` into a regular node.js `function` that we then call with a callback.
 
 `galaxy.unstar` can also be applied to a whole module, in which case it _unstars_ all the functions of the module. This is handy if you have written a library with galaxy and you want to make it available to developers who write their code in callback style. Just create another module that exports the _unstarred_ version of the functions:
 
@@ -89,7 +89,7 @@ Together, `galaxy.star` and `galaxy.unstar` take care of all the ugly work to ma
 
 ## futures
 
-Fine. But all the code that we have seen above is completely sequential. Would be nice to be able to parallelize some calls.
+Fine. But all the code that we have seen above is completely sequential. Would be nice if we could parallelize some calls.
 
 This is actually not very difficult: if you call _unstarred_ functions without a callback you obtain a _future_. This future executes in parallel with the rest of your code (in the spots where your code _yields_). The future is a parameterless `function*`. So you can _yield_ on it to get the result of the computation.
 
