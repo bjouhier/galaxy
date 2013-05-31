@@ -1,8 +1,8 @@
-Galaxy brings async/await semantics to JavaScript with a minimal API, thanks to EcmaScript 6 generators.
+Galaxy brings `async/await` semantics to JavaScript with a minimal API, thanks to EcmaScript 6 generators.
 
 ## async/await in JavaScript
 
-Galaxy lets you write async code as if JavaScript had `async/await` keywords like [other languages](http://msdn.microsoft.com/en-us/library/vstudio/hh191443.aspx).
+Galaxy lets you write async code as if JavaScript had [`async/await` keywords](http://msdn.microsoft.com/en-us/library/vstudio/hh191443.aspx).
 
 For example, here is how you would write an async function that counts lines in a file:
 
