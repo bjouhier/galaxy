@@ -2,7 +2,7 @@ Galaxy brings async/await semantics to JavaScript with a minimal API, thanks to 
 
 ## async/await in JavaScript
 
-Galaxy lets you write async code as if JavaScript had `async/await` keywords like other [other languages](http://msdn.microsoft.com/en-us/library/vstudio/hh191443.aspx).
+Galaxy lets you write async code as if JavaScript had `async/await` keywords like [other languages](http://msdn.microsoft.com/en-us/library/vstudio/hh191443.aspx).
 
 For example, here is how you would write an async function that counts lines in a file:
 
@@ -63,6 +63,7 @@ var readdir = galaxy.star(fs.readdir);
 var readFile = galaxy.star(fs.readFile);
 ```
 
+
 The other side of the magic happens when node.js calls your `function*` APIs. In our example, this will be when we call the main function of our script: `projectLineCounts`. Here is the code:
 
 ``` javascript
@@ -89,7 +90,7 @@ Together, `galaxy.star` and `galaxy.unstar` take care of all the ugly work to ma
 
 Fine. But all the code that we have seen above is completely sequential. Would be nice to be able to parallelize some calls.
 
-This is actually not very difficult: if you call _unstarred_ functions without a callback you obtain a _future_. This future executes in parallel with the rest of your call (in the spots where the code _yields_). The future is a parameterless `function*`. So you can _yield_ on it to get the result of the computation.
+This is actually not very difficult: if you call _unstarred_ functions without a callback you obtain a _future_. This future executes in parallel with the rest of your code (in the spots where the code _yields_). The future is a parameterless `function*`. So you can _yield_ on it to get the result of the computation.
 
 So, for example, you can parallelize the `projectLineCount` operation by rewriting it as:
 
