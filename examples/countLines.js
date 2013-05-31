@@ -1,28 +1,28 @@
 var galaxy = require('galaxy');
-var fsStar = galaxy.star(require('fs'));
+var fs = galaxy.star(require('fs'));
 
-function* countLinesStar(path) {
-	var names = yield fsStar.readdir(path);
+function* countLines(path) {
+	var names = yield fs.readdir(path);
 	var total = 0;
 	for (var i = 0; i < names.length; i++) {
 		var fullname = path + '/' + names[i];
-		var count = (yield fsStar.readFile(fullname, 'utf8')).split('\n').length;
+		var count = (yield fs.readFile(fullname, 'utf8')).split('\n').length;
 		console.log(fullname + ': ' + count);
 		total += count;
 	}
 	return total;
 }
 
-function* projectLineCountsStar() {
+function* projectLineCounts() {
 	var total = 0;
-	total += yield countLinesStar(__dirname + '/../examples');
-	total += yield countLinesStar(__dirname + '/../lib');
-	total += yield countLinesStar(__dirname + '/../test');
+	total += yield countLines(__dirname + '/../examples');
+	total += yield countLines(__dirname + '/../lib');
+	total += yield countLines(__dirname + '/../test');
 	console.log('TOTAL: ' + total);
 	return total;
 }
 
-var projectLineCountsCb = galaxy.unstar(projectLineCountsStar);
+var projectLineCountsCb = galaxy.unstar(projectLineCounts);
 
 projectLineCountsCb(function(err, result) {
 	if (err) throw err;

@@ -1,21 +1,20 @@
 var galaxy = require('galaxy');
-var fsStar = galaxy.star(require('fs'));
+var fs = galaxy.star(require('fs'));
 
-function* countLinesStar(path) {
-	var names = yield fsStar.readdir(path);
+function* countLines(path) {
+	var names = yield fs.readdir(path);
 	var total = 0;
 	for (var i = 0; i < names.length; i++) {
 		var fullname = path + '/' + names[i];
-		var count = (yield fsStar.readFile(fullname, 'utf8')).split('\n').length;
+		var count = (yield fs.readFile(fullname, 'utf8')).split('\n').length;
 		console.log(fullname + ': ' + count);
 		total += count;
 	}
 	return total;
 }
 
-
-function* projectLineCountsParallelStar() {
- 	var countLinesCb = galaxy.unstar(countLinesStar);
+function* projectLineCountsParallel() {
+ 	var countLinesCb = galaxy.unstar(countLines);
  	var future1 = countLinesCb(__dirname + '/../examples');
  	var future2 = countLinesCb(__dirname + '/../lib');
 	var future3 = countLinesCb(__dirname + '/../test');
@@ -24,7 +23,7 @@ function* projectLineCountsParallelStar() {
 	return total; 
 }
 
-galaxy.unstar(projectLineCountsParallelStar)(function(err, result) {
+galaxy.unstar(projectLineCountsParallel)(function(err, result) {
 	if (err) throw err;
 	console.log('CALLBACK RESULT: ' + result);	
 })
