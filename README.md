@@ -106,7 +106,7 @@ function* projectLineCountsParallel() {
 }
 ```
 
-Note: this is not true parallelism; the futures only move forwards when the code reaches `yield` keywords.
+Note: this is not true parallelism; the futures only move forwards when execution reaches `yield` keywords in your code.
 
 ## API
 
