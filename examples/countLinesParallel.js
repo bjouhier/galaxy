@@ -14,10 +14,9 @@ function* countLines(path) {
 }
 
 function* projectLineCountsParallel() {
- 	var countLinesCb = galaxy.unstar(countLines);
- 	var future1 = countLinesCb(__dirname + '/../examples');
- 	var future2 = countLinesCb(__dirname + '/../lib');
-	var future3 = countLinesCb(__dirname + '/../test');
+ 	var future1 = galaxy.spin(countLines(__dirname + '/../examples'));
+ 	var future2 = galaxy.spin(countLines(__dirname + '/../lib'));
+	var future3 = galaxy.spin(countLines(__dirname + '/../test'));
  	var total = (yield future1()) + (yield future2()) + (yield future3());
 	console.log('TOTAL: ' + total);
 	return total; 

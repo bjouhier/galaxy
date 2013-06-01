@@ -65,7 +65,7 @@ var readFile = galaxy.star(fs.readFile);
 
 ---
 
-The other side of the magic happens when node.js calls your `function*` APIs. In our example, this will be when we call the main function of our script: `projectLineCounts`. Here is the code:
+The other side of the magic happens when node.js calls your `function*` APIs. In our example, this happens when we call `projectLineCounts`, our main function. Here is the code:
 
 ``` javascript
 var projectLineCountsCb = galaxy.unstar(projectLineCounts);
@@ -87,20 +87,19 @@ module.exports = galaxy.unstar(require('my-starred-functions'));
 
 Together, `galaxy.star` and `galaxy.unstar` take care of all the ugly work to make `*/yield` behave like `async/await`.
 
-## futures
+## spin
 
 Fine. But all the code that we have seen above is completely sequential. Would be nice if we could parallelize some calls.
 
-This is actually not very difficult: if you call _unstarred_ functions without a callback you obtain a _future_. This future executes in parallel with the rest of your code (in the spots where your code _yields_). The future is a parameterless `function*`. So you can _yield_ on it to get the result of the computation.
+This is actually not very difficult: instead of yielding on a generator returned by a _starred_ function you can _spin_ on it. This gives you another _starred_ function on which you can yield later to get the result of the computation.
 
 So, for example, you can parallelize the `projectLineCount` operation by rewriting it as:
 
 ``` javascript
 function* projectLineCountsParallel() {
- 	var countLinesCb = galaxy.unstar(countLines);
- 	var future1 = countLinesCb(__dirname + '/../examples');
- 	var future2 = countLinesCb(__dirname + '/../lib');
-	var future3 = countLinesCb(__dirname + '/../test');
+ 	var future1 = galaxy.spin(countLines(__dirname + '/../examples'));
+ 	var future2 = galaxy.spin(countLines(__dirname + '/../lib'));
+	var future3 = galaxy.spin(countLines(__dirname + '/../test'));
  	var total = (yield future1()) + (yield future2()) + (yield future3());
 	console.log('TOTAL: ' + total);
 	return total; 
@@ -119,7 +118,12 @@ function* projectLineCountsParallel() {
   `genFn` is the generator function.  
   `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`.
 
-As previously mentioned these calls may also be applied to a whole module, or to any object containing functions. `Sync` calls will be skipped.
+As previously mentioned these calls may also be applied to a whole module, or to any object containing functions. `Sync` calls are skipped.
+
+* `var genFn = galaxy.spin(generator)`  
+  Start spinning a generator that you obtained by calling a starred function (without yield).  
+  The generator will execute in parallel with other code, at the points where the code yields.  
+  The returned value is a generator function on which you can yield later to obtain the result of the computation.
 
 ## Installation
 
