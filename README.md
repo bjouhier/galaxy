@@ -78,7 +78,7 @@ projectLineCountsCb(function(err, result) {
 
 The `galaxy.unstar` call converts our `function*` into a regular node.js `function` that we then call with a callback.
 
-`galaxy.unstar` can also be applied to a whole module, in which case it _unstars_ all the functions of the module. This is handy if you have written a library with galaxy and you want to make it available to developers who write their code in callback style. Just create another module that exports the _unstarred_ version of the functions:
+`galaxy.unstar` can also be applied to a whole module, in which case it _unstars_ all the functions of the module. This is handy if you have written a library with galaxy and you want to make it available to developers who write their code in callback style. Just create another module that exports the _unstarred_ version of your functions:
 
 ``` javascript
 var galaxy = require('galaxy');
@@ -91,7 +91,7 @@ Together, `galaxy.star` and `galaxy.unstar` take care of all the ugly work to ma
 
 Fine. But all the code that we have seen above is completely sequential. Would be nice if we could parallelize some calls.
 
-This is actually not very difficult: instead of yielding on a generator returned by a _starred_ function you can _spin_ on it. This gives you another _starred_ function on which you can yield later to get the result of the computation.
+This is actually not very difficult: instead of yielding on a generator returned by a _starred_ function you can _spin_ on it. This runs the generator in parallel with your other code and gives you back a future. The future that you obtain is just another _starred_ function on which you can yield later to get the result of the computation.
 
 So, for example, you can parallelize the `projectLineCount` operation by rewriting it as:
 
@@ -105,6 +105,8 @@ function* projectLineCountsParallel() {
 	return total; 
 }
 ```
+
+Note: this is not true parallelism; the futures only move forwards when the code reaches `yield` keywords.
 
 ## API
 
