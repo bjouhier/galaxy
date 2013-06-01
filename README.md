@@ -93,7 +93,7 @@ Fine. But all the code that we have seen above is completely sequential. Would b
 
 This is actually not very difficult: instead of _yielding_ on a generator returned by a _starred_ function you can _spin_ on it. This runs the generator in parallel with your other code and it gives you back a future. The future that you obtain is just another _starred_ function on which you can _yield_ later to get the result of the computation.
 
-So, for example, you can parallelize the `projectLineCount` operation by rewriting it as:
+So, for example, you can parallelize the `projectLineCounts` operation by rewriting it as:
 
 ``` javascript
 function* projectLineCountsParallel() {
