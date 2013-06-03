@@ -1,3 +1,9 @@
+// These unit tests are borrowed from streamline.js
+// They are a bit heavy because they test all sorts of variants of basic language constructs (loops, switch, etc.)
+// This comes from streamline where it was important to test the transformation patterns for every contruct.
+// We could trim a bit in the galaxy context because we can rely on the JS engine  
+// but it does not hurt to have these tests so I kept them all.
+
 var module = QUnit.module;
 var galaxy = require('galaxy');
 
@@ -594,8 +600,7 @@ asyncTest("async comma operator", 1, function() {
 	}, 11);
 })
 
-// Not sure I can make yield work with new!
-false && asyncTest("async constructor", 1, function() {
+asyncTest("async constructor", 1, function() {
 	evalTest(function* f() {
 		function* Foo(val) {
 			yield delay();
@@ -604,7 +609,7 @@ false && asyncTest("async constructor", 1, function() {
 		Foo.prototype.y = function() {
 			return this.x + 1;
 		}
-		return new (yield Foo(5)).y();
+		return (yield galaxy.new(Foo)(5)).y();
 	}, 6);
 })
 

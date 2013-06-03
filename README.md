@@ -108,6 +108,28 @@ function* projectLineCountsParallel() {
 
 Note: this is not true parallelism; the futures only move forwards when execution reaches `yield` keywords in your code.
 
+## Exception Handling
+
+The usual Exception Handling keywords (`try/catch/finally/throw`) work as you would expect them to.
+
+If an exception is thrown during the excution of a future, it is thrown when you _yield_ on the future, not when you start it with `galaxy.spin`.
+
+## Asynchronous constructor
+
+Galaxy also lets you invoke constructors that contain asynchronous calls but this is one of the rare cases where you cannot just use the usual JavaScript keyword. Instead of using the `new` keyword you use the special `galaxy.new` helper. Here is an example:
+
+``` javascript
+// asynchronous constructor
+function* MyClass(name) {
+	this.name = name;
+	yield myAsyncFn();
+}
+
+// create an instance of MyClass
+var myObj = (yield galaxy.new(MyClass)("obj1"));
+console.log(myObj.name);
+```
+
 ## API
 
 * `var genFn = galaxy.star(asyncFn, cbIndex)`  
@@ -120,12 +142,19 @@ Note: this is not true parallelism; the futures only move forwards when executio
   `genFn` is the generator function.  
   `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`.
 
-As previously mentioned these calls may also be applied to a whole module, or to any object containing functions. `Sync` calls are skipped.
+  As previously mentioned these calls may also be applied to a whole module, or to any object containing functions. 
+  `Sync` calls are skipped.
 
 * `var genFn = galaxy.spin(generator)`  
   Start spinning a generator that you obtained by calling a starred function (without yield).  
   The generator will execute in parallel with other code, at the points where the code yields.  
   The returned value is a generator function on which you can yield later to obtain the result of the computation.
+
+* `var genCreate = galaxy.new(genConstructor)`  
+  Transforms a constructor generator function in a creator function.  
+  `genConstructor` is a _starred_ constructor that may contain `yield` calls.  
+  `genCreate` is a _starred_ function that you can call as `yield genCreate(args)`
+
 
 ## Installation
 
@@ -158,7 +187,29 @@ v0.11.2
 $ node --harmony examples/countLines
 ```
 
-Also, this is just a first brew of the galaxy project and I did not have time to test much. So be ready for some bugs. But the foundation should be pretty solid.
+The yield keyword can be tricky because it has a very low precedence. For example you cannot write:
+
+``` javascript
+var sum1 = yield a() + yield b();
+var sum2 = yield c() + 3;
+```
+
+because they get interpreted as:
+
+``` javascript
+var sum1 = yield (a() + yield b()); // compile error
+var sum2 = yield (c() + 3); // galaxy gives runtime error
+```
+
+You have to write:
+
+``` javascript
+var sum = (yield a()) + (yield b());
+var sum2 = (yield c()) + 3;
+```
+
+This brings a little lispish flavor to your JS code.
+
 
 ## More info
 

@@ -6,9 +6,13 @@ function* countLines(path) {
 	var total = 0;
 	for (var i = 0; i < names.length; i++) {
 		var fullname = path + '/' + names[i];
-		var count = (yield fs.readFile(fullname, 'utf8')).split('\n').length;
-		console.log(fullname + ': ' + count);
-		total += count;
+		if ((yield fs.stat(fullname)).isDirectory()) {
+			total += yield countLines(fullname);
+		} else {
+			var count = (yield fs.readFile(fullname, 'utf8')).split('\n').length;
+			console.log(fullname + ': ' + count);
+			total += count;
+		}
 	}
 	return total;
 }
