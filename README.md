@@ -12,9 +12,13 @@ function* countLines(path) {
 	var total = 0;
 	for (var i = 0; i < names.length; i++) {
 		var fullname = path + '/' + names[i];
-		var count = (yield fs.readFile(fullname, 'utf8')).split('\n').length;
-		console.log(fullname + ': ' + count);
-		total += count;
+		if ((yield fs.stat(fullname)).isDirectory()) {
+			total += yield countLines(fullname);
+		} else {
+			var count = (yield fs.readFile(fullname, 'utf8')).split('\n').length;
+			console.log(fullname + ': ' + count);
+			total += count;
+		}
 	}
 	return total;
 }
@@ -110,13 +114,13 @@ Note: this is not true parallelism; the futures only move forwards when executio
 
 ## Exception Handling
 
-The usual Exception Handling keywords (`try/catch/finally/throw`) work as you would expect them to.
+The usual exception handling keywords (`try/catch/finally/throw`) work as you would expect them to.
 
 If an exception is thrown during the excution of a future, it is thrown when you _yield_ on the future, not when you start it with `galaxy.spin`.
 
 ## Asynchronous constructor
 
-Galaxy also lets you invoke constructors that contain asynchronous calls but this is one of the rare cases where you cannot just use the usual JavaScript keyword. Instead of using the `new` keyword you use the special `galaxy.new` helper. Here is an example:
+Galaxy also lets you invoke constructors that contain asynchronous calls but this is one of the rare cases where you cannot just use the usual JavaScript keyword. Instead of the `new` keyword you use the special `galaxy.new` helper. Here is an example:
 
 ``` javascript
 // asynchronous constructor
@@ -151,9 +155,9 @@ console.log(myObj.name);
   The returned value is a generator function on which you can yield later to obtain the result of the computation.
 
 * `var genCreate = galaxy.new(genConstructor)`  
-  Transforms a constructor generator function in a creator function.  
+  Converts a constructor generator function to a _creator_ function.  
   `genConstructor` is a _starred_ constructor that may contain `yield` calls.  
-  `genCreate` is a _starred_ function that you can call as `yield genCreate(args)`
+  The returned `genCreate` is a _starred_ function that you can call as `yield genCreate(args)`
 
 
 ## Installation
