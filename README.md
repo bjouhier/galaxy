@@ -134,12 +134,12 @@ var myObj = (yield galaxy.new(MyClass)("obj1"));
 console.log(myObj.name);
 ```
 
-# Stable context
+## Stable context
 
 Global variables are evil. Everyone knows that!
 
 But there are a few cases where they can be helpful. 
-The main one is track information about _who_ is executing the current request: security context, locale, etc. This kind of information is usually very stable (for a given request) and it would be very heavy to pass it explicitly down to all the low level APIs that need it. So the best way is to pass it implicitly through some kind of global.
+The main one is track information about _who_ is executing the current request: security context, locale, etc. This kind of information is usually very stable (for a given request) and it would be very heavy to pass it explicitly down to all the low level APIs that need it. So the best way is to pass it implicitly through some kind of global context.
 
 But you need a special global which is preserved across _yield_ points. If you set it at the beginning of a request it should remain the same throughout the request (unless you change it explicitly during the request). It should not change under your feet because other requests with different contexts get interleaved.
 
@@ -175,7 +175,7 @@ Gotcha: the context will be preserved if you write your logic in async/await sty
   The returned `genCreate` is a _starred_ function that you can call as `yield genCreate(args)`
 
 * `galaxy.context = ctx`  
-* `ctx = galaxy.context`  
+  `ctx = galaxy.context`  
   Sets and gets the stable context.
 
 ## Installation
