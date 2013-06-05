@@ -139,9 +139,9 @@ console.log(myObj.name);
 Global variables are evil. Everyone knows that!
 
 But there are a few cases where they can be helpful. 
-The main one is track information about _who_ is executing the current request: security context, locale, etc. This kind of information is usually very stable (for a given request) and it would be very heavy to pass it explicitly down to all the low level APIs that need it. So the best way is to pass it implicitly through some kind of global context.
+The main one is to track information about _who_ is executing the current request: security context, locale, etc. This kind of information is usually very stable (for a given request) and it would be very heavy to pass it explicitly down to all the low level APIs that need it. So the best way is to pass it implicitly through some kind of global context.
 
-But you need a special global which is preserved across _yield_ points. If you set it at the beginning of a request it should remain the same throughout the request (unless you change it explicitly during the request). It should not change under your feet because other requests with different contexts get interleaved.
+But you need a special global which is preserved across _yield_ points. If you set it at the beginning of a request it should remain the same throughout the request (unless you change it explicitly). It should not change under your feet because other requests with different contexts get interleaved.
 
 Galaxy exposes a `context` property that is guaranteed to be stable across yield points. If you assign an object to `galaxy.context` at the beginning of a request, you can retrieve it later.
 
