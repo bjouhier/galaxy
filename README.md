@@ -134,6 +134,21 @@ var myObj = (yield galaxy.new(MyClass)("obj1"));
 console.log(myObj.name);
 ```
 
+# Stable context
+
+Global variables are evil. Everyone knows that!
+
+But there are a few cases where they can be helpful. 
+The main one is track information about _who_ is executing the current request: security context, locale, etc. This kind of information is usually very stable (for a given request) and it would be very heavy to pass it explicitly down to all the low level APIs that need it. So the best way is to pass it implicitly through some kind of global.
+
+But you need a special global which is preserved across _yield_ points. If you set it at the beginning of a request it should remain the same throughout the request (unless you change it explicitly during the request). It should not change under your feet because other requests with different contexts get interleaved.
+
+Galaxy exposes a `context` property that is guaranteed to be stable across yield points. If you assign an object to `galaxy.context` at the beginning of a request, you can retrieve it later.
+
+Note: this functionality is more or less equivalent to Thread Local Storage (TLS) in threaded systems.
+
+Gotcha: the context will be preserved if you write your logic in async/await style with galaxy, but you have to be careful if you start mixing sync style and callback style in your source code. You may break the propagation.
+
 ## API
 
 * `var genFn = galaxy.star(asyncFn, cbIndex)`  
@@ -159,6 +174,9 @@ console.log(myObj.name);
   `genConstructor` is a _starred_ constructor that may contain `yield` calls.  
   The returned `genCreate` is a _starred_ function that you can call as `yield genCreate(args)`
 
+* `galaxy.context = ctx`  
+* `ctx = galaxy.context`  
+  Sets and gets the stable context.
 
 ## Installation
 
