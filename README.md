@@ -91,7 +91,7 @@ module.exports = galaxy.unstar(require('my-starred-functions'));
 
 Together, `galaxy.star` and `galaxy.unstar` take care of all the ugly work to make `*/yield` behave like `async/await`.
 
-## spin
+## Parallelizing
 
 Fine. But all the code that we have seen above is completely sequential. Would be nice if we could parallelize some calls.
 
