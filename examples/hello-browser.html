@@ -1,0 +1,24 @@
+<html><head><title>async / await in your browser</title>
+<script src="../lib/galaxy.js"></script>
+<script>
+var sleep = galaxy.star(function(millis, cb) {
+	setTimeout(cb, millis);
+});
+
+function* hello() {
+	alert("hello ...");
+	yield sleep(1000);
+	alert("world!");
+	return "bye";
+}
+
+galaxy.unstar(hello)(function(err, result) {
+	if (err) throw err;
+	alert(result);
+})
+</script>
+</head>
+<body>
+	<div id="results">
+</body>
+</html>
