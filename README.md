@@ -194,6 +194,12 @@ $ node --harmony examples/countLinesParallel
 ... slightly different output  ...
 ```
 
+## Running in the browser
+
+Galaxy also runs browser side but you need a bleeding edge browser like the latest Google Chrome Canary that you can download from https://www.google.com/intl/en/chrome/browser/canary.html. 
+
+Harmony generators are not turned on by default but the procedure to enable them is easy: open the chrome://flags page then check the "Enable Experimental JavaScript" option and restart Canary. You're all set and you can open the examples/hello-browser.html page to see Galaxy in action. Pretty boring demo but at least it works!
+
 ## Gotchas
 
 Generators have been added very recently to V8. To use them you need to:
