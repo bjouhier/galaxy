@@ -36,9 +36,9 @@ Now, point your browser to http://127.0.0.1:1337/. You should get a `"hello worl
 This code is very close to the original version. Just a few differences:
 
 * The server is created with galaxy's `streams.createHttpServer` rather than with node's `http.createServer` call.
-* The server callback is a `function*` rather than a `function`. This allows you to _yield_ on asynchronous calls inside the request handlers.
+* The server callback is a `function*` rather than a `function`. This allows you to _yield_ on asynchronous calls inside the request handler.
 * The `request` and `response` parameters are galaxy wrappers around node's request and response streams. These wrappers don't make a difference for now but they will make it easier to read and write from these streams later.
-* `listen` is invoked with yield. This is because `listen` is an asynchronous call. The galaxy version prints the `'Server running ...'` message after receiving the `listening` event, while the original node version prints the message without waiting for the `listening` event. This is a really minor difference though.
+* `listen` is invoked with `yield. This is because `listen` is an asynchronous call. The galaxy version prints the `'Server running ...'` message after receiving the `listening` event, while the original node version prints the message without waiting for the `listening` event. This is a really minor difference though.
 
 ## [Setting up a simple search form](tuto2-form.js)
 
@@ -67,7 +67,7 @@ var server = streams.createHttpServer(function*(request, response) {
 	yield response.write(begPage.replace('{q}', query.q || ''));
 	yield response.write(yield search(query.q));
 	yield response.write(endPage.replace('{ms}', new Date() - t0));
-	yield response.write();
+	response.end();
 });
 
 function* search(q) {
@@ -81,6 +81,8 @@ galaxy.main(function *() {
 ```
 
 Nothing difficult here. We are using node's `url` and `querystring` helper modules to parse the URL and its query string component. We are now writing the response in 3 chunks with the asynchronous `write` method of the wrapped response stream.
+
+The `response.end()` does not need a yield because it is synchronous. Note that writing `null` or `undefined`,  for example with `yield response.write()` is equivalent to calling `response.end()`.
 
 We are going to implement the `search` function next. For now we are just returning a `NIY` message. Note that our `search` function is a `function*`and that we are calling it with `yield`. We need this because `search` will soon become an asynchronous function.
 
@@ -193,7 +195,7 @@ Otherwise, there is not much to say about `fileSearch`. It uses a simple recursi
 
 Now, we are going to extend our search to a MongoDB database.
 
-To run this you need to install MongoDB and start the mongod daemon. You also have to install the node MongoDB driver:
+To run this you need to install MongoDB and start the `mongod` daemon. You also have to install the node MongoDB driver:
 
 ```sh
 npm install mongodb
@@ -227,7 +229,7 @@ function* mongoSearch(q) {
 		var coln = yield star(db, 'collection')('movies');
 		if ((yield star(coln, 'count')()) === 0) yield star(coln, 'insert')(MOVIES);
 		var re = new RegExp(".*" + q + ".*");
-		var found = yield star(coln, 'find', 1)({
+		var found = yield star(coln, 'find')({
 			$or: [{
 				title: re
 			}, {
@@ -259,7 +261,7 @@ var MOVIES = [{
 
 The tricky parts are the `star(db, 'open')`, `star(coln, 'count')`, etc. calls. These calls are necessary because the mongodb driver gives us callback based APIs and we have to _star_ them to be able to _yield_ on them. 
 
-Notes: `star(db.open)()` would not work because `this` would be different from `db` inside the calls. We would need `star(db.open).bind(db)()` instead. But `star(db, 'open')` does the job as well.
+Notes: `star(db.open)()` would not work because `this` would be different from `db` inside the call. We would need `star(db.open).bind(db)()` instead. But `star(db, 'open')` does the job as well.
 
 The rest of the `mongoSearch` function is rather straightforwards once you know the mongodb API. The `try/finally` is rather interesting: it guarantees that the database will be closed regardless of whether the `try` block completes successfully or throws an exception.
 
@@ -267,7 +269,7 @@ The rest of the `mongoSearch` function is rather straightforwards once you know 
 
 So far so good. But the code that we have written executes completely sequentially. So we only start the directory search after having obtained the response from Google and we only start the Mongo search after having completed the directory search. This is very inefficient. We should run these 3 independent search operations in parallel.
 
-This is where _futures_ come into play. The principle is simple: if you call an asynchronous function with `galaxy.spin` instead of `yield`, the function returns a _future_ `f` that you can call later as `yield f()` to obtain the result.
+This is where _futures_ come into play. The principle is simple: if you call an asynchronous function with `galaxy.spin` instead of `yield`, the function returns a _future_ `f` on which you can _yield_ later with `yield f()` to obtain the result.
 
 So, to parallelize, we just need a small change to our `search` function:
 
@@ -289,11 +291,11 @@ function* search(q) {
 }
 ```
 
-We can also go further and parallelize the directory traversal. This could be done with futures but there is a simpler way to do it: passing the number of parallel operations as second argument to the `forEachStar` call:
+We can also go further and parallelize the directory traversal. This could be done with futures but there is a simpler way to do it: passing the number of parallel operations as first argument to the `forEachStar` call:
 
 ```javascript
 	function* doDir(dir) {
-		yield (yield fs.readdir(dir)).forEachStar(-1, function*(file) {
+		yield (yield fs.readdir(dir)).forEachStar(4, function*(file) {
 			var f = dir + '/' + file;
 			var stat = yield fs.stat(f);
 			...
@@ -353,7 +355,7 @@ And, last but not least, there is a concurrency bug in this code! Let's fix it.
 	if ((yield star(coln, 'count')()) === 0) yield star(coln, 'insert')(MOVIES);
 ```
 
-The problem is that the code yields everywhere we have an `yield` in the code. So this code can get interrupted between the `yield star(coln, 'count')()` call and the `yield star(coln, 'insert')(MOVIES)` call. And we can get into the unfortunate situation where two requests or more will get a count of 0, which would lead to multiple insertions of the `MOVIES` list.
+The problem is that the code _yields_ everywhere we have an `yield` in the code. So this code can get interrupted between the `yield star(coln, 'count')()` call and the `yield star(coln, 'insert')(MOVIES)` call. And we can get into the unfortunate situation where two requests or more will get a count of 0, which would lead to multiple insertions of the `MOVIES` list.
 
 This is easy to fix, though. All we need is a little funnel to restrict access to this critical section:
 

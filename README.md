@@ -118,6 +118,31 @@ The usual exception handling keywords (`try/catch/finally/throw`) work as you wo
 
 If an exception is thrown during the excution of a future, it is thrown when you _yield_ on the future, not when you start it with `galaxy.spin`.
 
+## Long stacktrace
+
+Galaxy provides long stacktraces. Here is a typical stacktrace:
+
+```
+Error: getaddrinfo ENOTFOUND
+    <<< yield stack >>>
+    at googleSearch (/Users/bruno/dev/syracuse/node_modules/galaxy/tutorial/tuto6-mongo.js:43:11)
+    at search (/Users/bruno/dev/syracuse/node_modules/galaxy/tutorial/tuto6-mongo.js:30:34)
+    at  (/Users/bruno/dev/syracuse/node_modules/galaxy/tutorial/tuto6-mongo.js:22:29)
+    <<< raw stack >>>
+    at errnoException (dns.js:37:11)
+    at Object.onanswer [as oncomplete] (dns.js:124:16)
+```
+
+The `<<< yield stack >>>` part is a stack which has been reconstructed by the galaxy library and which reflects the stack of `yield` calls in your code. 
+
+The `<<< raw stack >>>` part gives you the low level callback stack that triggered the exception. It is usually a lot less helpful than the _yield_ stack because it does not give you much context about the error.
+
+This feature requires that you install the `galaxy-stack` module:
+
+```
+npm install galaxy-stack
+```
+
 ## Asynchronous constructor
 
 Galaxy also lets you invoke constructors that contain asynchronous calls but this is one of the rare cases where you cannot just use the usual JavaScript keyword. Instead of the `new` keyword you use the special `galaxy.new` helper. Here is an example:
@@ -151,38 +176,18 @@ Gotcha: the context will be preserved if you write your logic in async/await sty
 
 ## API
 
-* `var genFn = galaxy.star(asyncFn, cbIndex)`  
-  This function turns an asynchronous function into a generator function.  
-  `asyncFn` is the asynchronous function.  
-  `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is assumed to be the last parameter of `asyncFn`.
+See [API.md](API.md)
 
-* `var asyncFn = galaxy.unstar(genFn, cbIndex)`  
-  This function converts in the other direction. It allows you to turn a generator function into an asynchronous function.  
-  `genFn` is the generator function.  
-  `cbIndex` is the index of the callback parameter. It is optional. If omitted the callback is added at the end of the parameter list of `genFn`.
-
-  As previously mentioned these calls may also be applied to a whole module, or to any object containing functions. 
-  `Sync` calls are skipped.
-
-* `var genFn = galaxy.spin(generator)`  
-  Start spinning a generator that you obtained by calling a starred function (without yield).  
-  The generator will execute in parallel with other code, at the points where the code yields.  
-  The returned value is a generator function on which you can yield later to obtain the result of the computation.
-
-* `var genCreate = galaxy.new(genConstructor)`  
-  Converts a constructor generator function to a _creator_ function.  
-  `genConstructor` is a _starred_ constructor that may contain `yield` calls.  
-  The returned `genCreate` is a _starred_ function that you can call as `yield genCreate(args)`
-
-* `galaxy.context = ctx`  
-  `ctx = galaxy.context`  
-  Sets and gets the stable context.
+See also the [tutorial](tutorial/tutorial.md) and the [examples](examples).
 
 ## Installation
 
 ``` sh
 $ npm install galaxy
+$ npm install galaxy-stack
 ```
+
+`galaxy-stack` is an optional module that you should install to get long stacktraces.
 
 Then you can try the examples:
 
