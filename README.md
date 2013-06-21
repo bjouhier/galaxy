@@ -280,6 +280,8 @@ This design is strongly inspired from bits and pieces of [streamline.js](https:/
 * [futures = currying the callback](http://bjouhier.wordpress.com/2011/04/04/currying-the-callback-or-the-essence-of-futures/)
 * [stream API: events or callbacks](http://bjouhier.wordpress.com/2012/07/04/node-js-stream-api-events-or-callbacks/)
 
+The streamline.js tool has been adapted to generate `galaxy` code in `--generators` mode. So, you can also use streamline.js as a preprocessor to generate `galaxy` code.
+
 ## License
 
 This work is licensed under the [MIT license](http://en.wikipedia.org/wiki/MIT_License).
