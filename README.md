@@ -137,7 +137,7 @@ The `<<< yield stack >>>` part is a stack which has been reconstructed by the ga
 
 The `<<< raw stack >>>` part gives you the low level callback stack that triggered the exception. It is usually a lot less helpful than the _yield_ stack because it does not give you much context about the error.
 
-This feature requires that you install the `galaxy-stack` module:
+This feature requires that you install the [galaxy-stack](https://github.com/bjouhier/galaxy-stack) module:
 
 ```
 npm install galaxy-stack
