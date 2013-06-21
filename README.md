@@ -116,7 +116,7 @@ Galaxy also provides a `funnel` call that you can use to limit the level of para
 
 ## Array utilities
 
-Galaxy provides async variants of the EcmaScript 5 array function (`forEach`, `map`, `filter`, ...). These variants give you the choice between sequential and parallel execution when relevant.
+Galaxy provides async variants of the EcmaScript 5 array functions (`forEach`, `map`, `filter`, ...). These variants give you the choice between sequential and parallel execution when relevant.
 
 See [API documentation](https://github.com/bjouhier/galaxy/blob/master/lib/array.md) for details.
 
