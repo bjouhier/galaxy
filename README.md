@@ -273,10 +273,12 @@ This brings a little lispish flavor to your JS code.
 
 ## More info
 
-This design is strongly inspired from bits and pieces of [streamline.js](https://github.com/Sage/streamlinejs). The following blog articles are a bit old and not completely aligned on `galaxy` but they give a bit of background:
+This design is strongly inspired from bits and pieces of [streamline.js](https://github.com/Sage/streamlinejs). The following blog articles (some a bit old) give background information on this design:
 
+* [bringing async/await to life in JavaScript](http://bjouhier.wordpress.com/2013/06/01/bringing-asyncawait-to-life-in-javascript/)
 * [an early experiment with generators](http://bjouhier.wordpress.com/2012/05/18/asynchronous-javascript-with-generators-an-experiment/).
 * [futures = currying the callback](http://bjouhier.wordpress.com/2011/04/04/currying-the-callback-or-the-essence-of-futures/)
+* [stream API: events or callbacks](http://bjouhier.wordpress.com/2012/07/04/node-js-stream-api-events-or-callbacks/)
 
 ## License
 
