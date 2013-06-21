@@ -190,6 +190,7 @@ Without `size` argument, `read` returns the next chunk of data available from th
 
 Readable streams also support a synchronous `unread(data)` method, which is handy for parsers.
 
+---
 
 Writable streams are similar. Once you have wrapped a _writable_ stream, you can write to it with:
 
