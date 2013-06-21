@@ -123,7 +123,6 @@ function* T(fn, code, failFn){
 }
 
 function stackEqual(got, expect) {
-	if (typeof T_ === 'function' && T_.gstreamlineFunction) { got = got.substring(0, 25); expect = expect.substring(0, 25); }
 	strictEqual(got, expect, expect);
 }
 // safari hack
