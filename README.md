@@ -145,22 +145,6 @@ This feature requires that you install the [galaxy-stack](https://github.com/bjo
 npm install galaxy-stack
 ```
 
-## Asynchronous constructor
-
-Galaxy also lets you invoke constructors that contain asynchronous calls but this is one of the rare cases where you cannot just use the usual JavaScript keyword. Instead of the `new` keyword you use the special `galaxy.new` helper. Here is an example:
-
-``` javascript
-// asynchronous constructor
-function* MyClass(name) {
-	this.name = name;
-	yield myAsyncFn();
-}
-
-// create an instance of MyClass
-var myObj = (yield galaxy.new(MyClass)("obj1"));
-console.log(myObj.name);
-```
-
 ## Stable context
 
 Global variables are evil. Everyone knows that!
@@ -203,6 +187,22 @@ yield stream.write(data, encoding);
 Encoding is optional. For a binary stream, you do not pass any `encoding` and `data` is a `Buffer`. For a character stream, you must pass an `encoding` and `data` is a `string`. 
 
 To end a stream, just write `null` or `undefined`. For example: `yield stream.write();`. You can also end it with a synchronous `stream.end()` call.
+
+## Asynchronous constructor
+
+Galaxy also lets you invoke constructors that contain asynchronous calls but this is one of the rare cases where you cannot just use the usual JavaScript keyword. Instead of the `new` keyword you use the special `galaxy.new` helper. Here is an example:
+
+``` javascript
+// asynchronous constructor
+function* MyClass(name) {
+	this.name = name;
+	yield myAsyncFn();
+}
+
+// create an instance of MyClass
+var myObj = (yield galaxy.new(MyClass)("obj1"));
+console.log(myObj.name);
+```
 
 ## API
 
