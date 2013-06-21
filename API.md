@@ -4,8 +4,6 @@ Cosmic harmony with callbacks and generators
 
 * [galaxy/lib/array](lib/array.md)  
   Array functions  
-* [galaxy/lib/funnel](lib/funnel.md)  
-  Semaphore utility
 * [galaxy/lib/galaxy](lib/galaxy.md)  
   Main galaxy module
 * [galaxy/lib/server/streams](lib/server/streams.md)  
