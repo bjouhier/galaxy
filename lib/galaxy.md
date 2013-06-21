@@ -3,6 +3,9 @@
 
 `var galaxy = require('galaxy');`  
 
+
+## API wrappers
+
 * `var genFn = galaxy.star(asyncFn, cbIndex)`  
   This function turns an asynchronous function into a generator function.  
   `asyncFn` is the asynchronous function.  
@@ -15,6 +18,9 @@
 
   As previously mentioned these calls may also be applied to a whole module, or to any object containing functions. 
   `Sync` calls are skipped.
+
+## Parallelizing
+
 * `var genFn = galaxy.spin(generator)`  
   Start spinning a generator that you obtained by calling a starred function (without yield).  
   The generator will execute in parallel with other code, at the points where the code yields.  
@@ -41,13 +47,19 @@
   The funnel can be closed with `fun.close()`.  
   When a funnel is closed, the operations that are still in the funnel will continue but their callbacks
   won't be called, and no other operation will enter the funnel.
+
+## Stable context (TLS-like)
+
+* `galaxy.context = ctx`  
+  `ctx = galaxy.context`  
+  Sets and gets the stable context.
+
+## Miscellaneous
+
 * `var genCreate = galaxy.new(genConstructor)`  
   Converts a constructor generator function to a _creator_ function.  
   `genConstructor` is a _starred_ constructor that may contain `yield` calls.  
   The returned `genCreate` is a _starred_ function that you can call as `yield genCreate(args)`
-* `galaxy.context = ctx`  
-  `ctx = galaxy.context`  
-  Sets and gets the stable context.
 * `galaxy.main(function*() { ... })`  
   Wrapper for a main asynchronous script.  
   See the [tutorial](../tutorial/tutorial.md) for an example
