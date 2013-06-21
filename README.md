@@ -112,6 +112,8 @@ function* projectLineCountsParallel() {
 
 Note: this is not true parallelism; the futures only move forwards when execution reaches `yield` keywords in your code.
 
+Galaxy also provides a `funnel` call that you can use to limit the level of parallelism on a given block of code. By setting the funnel's size to 1 you can set up critical sections. See the [galaxy API](https://github.com/bjouhier/galaxy/blob/master/lib/galaxy.md) for details.
+
 ## Exception Handling
 
 The usual exception handling keywords (`try/catch/finally/throw`) work as you would expect them to.
