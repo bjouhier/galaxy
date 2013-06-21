@@ -114,6 +114,12 @@ Note: this is not true parallelism; the futures only move forwards when executio
 
 Galaxy also provides a `funnel` call that you can use to limit the level of parallelism on a given block of code. By setting the funnel's size to 1 you can set up critical sections. See the [galaxy API](https://github.com/bjouhier/galaxy/blob/master/lib/galaxy.md) for details.
 
+## Array utilities
+
+Galaxy provides async variants of the EcmaScript 5 array function (`forEach`, `map`, `filter`, ...). These variants give you the choice between sequential and parallel execution when relevant.
+
+See [API documentation](https://github.com/bjouhier/galaxy/blob/master/lib/array.md) for details.
+
 ## Exception Handling
 
 The usual exception handling keywords (`try/catch/finally/throw`) work as you would expect them to.
