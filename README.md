@@ -174,6 +174,33 @@ Note: this functionality is more or less equivalent to Thread Local Storage (TLS
 
 Gotcha: the context will be preserved if you write your logic in async/await style with galaxy, but you have to be careful if you start mixing sync style and callback style in your source code. You may break the propagation.
 
+## Streams
+
+Galaxy provides a simple API to work with node.js streams. The [galaxy/lib/server/streams](https://github.com/bjouhier/galaxy/blob/master/lib/server/streams.md) module contains wrappers for all the main streams of the node API, as well as generic `ReadableStream` and `WritableStream` wrappers.
+
+Once you have wrapped a _readable_ stream, you can read from it with:
+
+```
+var data = yield stream.read(size);
+```
+
+The `size` parameter is optional. If you pass it and if the stream does not end prematurely, the `read` call returns a string/buffer of exactly `size` characters/bytes, depending on whether an encoding has been set or not. If the stream ends before `size` characters/bytes, the remaining data is returned. If you try to read past the end of the stream, `null` is returned.
+
+Without `size` argument, `read` returns the next chunk of data available from the stream, and `null` at the end of the stream.
+
+Readable streams also support a synchronous `unread(data)` method, which is handy for parsers.
+
+
+Writable streams are similar. Once you have wrapped a _writable_ stream, you can write to it with:
+
+```
+yield stream.write(data, encoding);
+```
+
+Encoding is optional. For a binary stream, you do not pass any `encoding` and `data` is a `Buffer`. For a character stream, you must pass an `encoding` and `data` is a `string`. 
+
+To end a stream, just write `null` or `undefined`. For example: `yield stream.write();`. You can also call a synchronous `stream.end()` function.
+
 ## API
 
 See [API.md](API.md)
