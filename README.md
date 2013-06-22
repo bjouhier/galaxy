@@ -124,7 +124,7 @@ See [API documentation](https://github.com/bjouhier/galaxy/blob/master/lib/array
 
 The usual exception handling keywords (`try/catch/finally/throw`) work as you would expect them to.
 
-If an exception is thrown during the excution of a future, it is thrown when you _yield_ on the future, not when you start it with `galaxy.spin`.
+If an exception is thrown during the excution of a future, it is thrown when you _yield_ on the future, not when you create it with `galaxy.spin`.
 
 ## Long stacktrace
 
@@ -145,7 +145,7 @@ The `<<< yield stack >>>` part is a stack which has been reconstructed by the ga
 
 The `<<< raw stack >>>` part gives you the low level callback stack that triggered the exception. It is usually a lot less helpful than the _yield_ stack because it does not give you much context about the error.
 
-This feature requires that you install the [galaxy-stack](https://github.com/bjouhier/galaxy-stack) module:
+This feature requires that you install the [galaxy-stack](https://github.com/bjouhier/galaxy-stack) addon module:
 
 ```
 npm install galaxy-stack
@@ -164,8 +164,6 @@ Galaxy exposes a `context` property that is guaranteed to be stable across yield
 
 Note: this functionality is more or less equivalent to Thread Local Storage (TLS) in threaded systems.
 
-Gotcha: the context will be preserved if you write your logic in async/await style with galaxy, but you have to be careful if you start mixing sync style and callback style in your source code. You may break the propagation.
-
 ## Streams
 
 Galaxy provides a simple API to work with node.js streams. The [galaxy/lib/server/streams](https://github.com/bjouhier/galaxy/blob/master/lib/server/streams.md) module contains wrappers for all the main streams of the node API, as well as generic `ReadableStream` and `WritableStream` wrappers.
@@ -176,7 +174,7 @@ Once you have wrapped a _readable_ stream, you can read from it with:
 var data = yield stream.read(size);
 ```
 
-The `size` parameter is optional. If you pass it and if the stream does not end prematurely, the `read` call returns a `string`/`Buffer` of exactly `size` characters / bytes, depending on whether an encoding has been set or not. If the stream ends before `size` characters / bytes, the remaining data is returned. If you try to read past the end of the stream, `null` is returned.
+The `size` parameter is optional. If you pass it and if the stream does not end prematurely, the `read` call returns a `string`/`Buffer` of exactly `size` characters / bytes. If the stream ends before `size` characters / bytes, the remaining data is returned. If you try to read past the end of the stream, `null` is returned.
 
 Without `size` argument, `read` returns the next chunk of data available from the stream, as a `string` or `Buffer` depending on encoding. It returns `null` at the end of the stream.
 
