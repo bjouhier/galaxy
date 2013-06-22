@@ -334,11 +334,11 @@ function* fileSearch(q) {
 
 The `filesFunnel` function acts like a semaphore. It limits the number of concurrent entries in its inner function to 20. 
 
-With this implementation, each call to `fileSearch` opens 20 files at most but we could still run out of file descriptors when lots of requests are handled concurrently. The fix is simple though: move the `filesFunnel` declaration one level up, just after the declaration of `flows`. And also bump the limit to 100 because this is now a global funnel:
+With this implementation, each call to `fileSearch` opens 20 files at most but we could still run out of file descriptors when lots of requests are handled concurrently. The fix is simple though: move the `filesFunnel` declaration one level up, above the declaration of `fileSearch`. And also bump the limit to 100 because this is now a global funnel:
 
 ```javascript
 // allocate a funnel for 100 concurrent open files
-var filesFunnel = flows.funnel(100);
+var filesFunnel = galaxy.funnel(100);
 
 function* fileSearch(q) {
 	// same as above, without the filesFunnel var declaration

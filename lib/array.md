@@ -6,7 +6,7 @@ These functions are asynchronous variants of the EcmaScript 5 Array functions.
 Common Rules: 
 
 These variants are postfixed by `Star`.  
-Most of them have an optional `options` second parameter which controls the level of 
+Most of them have an optional `options` first parameter which controls the level of 
 parallelism. This `options` parameter may be specified either as `{ parallel: par }` 
 where `par` is an integer, or directly as a `par` integer value.  
 The `par` values are interpreted as follows:
@@ -14,7 +14,7 @@ The `par` values are interpreted as follows:
 * If absent or equal to 1, execution is sequential.
 * If > 1, at most `par` operations are parallelized.
 * if 0, a default number of operations are parallelized. 
-  This default is defined by `galaxy.funnel.defaultSize` (4 by default - see `flows` module).
+  This default is defined by `galaxy.funnel.defaultSize` (4 by default - see [galaxy](./galaxy.md) module).
 * If < 0 or Infinity, operations are fully parallelized (no limit).
 
 Functions:
