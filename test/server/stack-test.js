@@ -1,9 +1,9 @@
+"use strict";
 // WARNING: DO NOT INSERT COMMENTS OR ANYTHING
 // Line numbers matter to this test!
 
 var module = QUnit.module;
 var galaxy = require('galaxy');
-
 
 var nextTick = galaxy.star(function (cb){
 	setTimeout(function(){

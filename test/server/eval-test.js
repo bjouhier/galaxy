@@ -1,3 +1,4 @@
+"use strict";
 // These unit tests are borrowed from streamline.js
 // They are a bit heavy because they test all sorts of variants of basic language constructs (loops, switch, etc.)
 // This comes from streamline where it was important to test the transformation patterns for every contruct.
@@ -683,10 +684,4 @@ asyncTest("labelled break", 1, function() {
 		}
 		return result;
 	}, '!15-!16-!/!25-!26-!/!35-!36-!!38-!39-/!45-!46-!!55-!56-!');
-})
-
-asyncTest("octal literal", 1, function() {
-	evalTest(function* f() {
-		return 010;
-	}, 8);
 })

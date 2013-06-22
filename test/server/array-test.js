@@ -1,3 +1,5 @@
+"use strict";
+
 var module = QUnit.module;
 var galaxy = require("galaxy");
 
