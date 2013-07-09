@@ -1,6 +1,5 @@
 "use strict";
-
-var module = QUnit.module;
+QUnit.module(module);
 var galaxy = require("galaxy");
 
 function* delay(val) {
@@ -12,8 +11,6 @@ function* delayFail(err) {
 	yield galaxy.star(process.nextTick)();
 	throw err;
 }
-
-module("array");
 
 function sparse() {
 	var a = [];

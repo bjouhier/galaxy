@@ -2,7 +2,6 @@
 
 var galaxy = require('galaxy');
 var streams = require('galaxy/lib/server/streams');
-var module = QUnit.module;
 
 var bufSize = 100;
 var bufCount = 3;
@@ -55,7 +54,7 @@ var paused = 0,
 	resumed = 0;
 var doStop = false;
 
-module("node streams test", {
+QUnit.module(module.id, {
 	setup: function() {},
 	teardown: function() {
 		if (doStop) {
