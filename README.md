@@ -164,6 +164,33 @@ Galaxy exposes a `context` property that is guaranteed to be stable across yield
 
 Note: this functionality is more or less equivalent to Thread Local Storage (TLS) in threaded systems.
 
+## Odd callbacks
+
+Galaxy is designed to work with functions that have the usual node.js callback signature: `callback(err, result)`. It also works with functions that return several results through their callback. In this case the results are returned as an array. For example:
+
+``` javascript
+var request = require('request');
+// request.get calls its callback as callback(err, response, body)
+
+var get = galaxy.star(request.get);
+var r = yield get(url);
+// the starred version returns [response, body]
+console.log("status=" + r[0].statusCode);
+console.log("body=" + r[1]);
+```
+
+On the other hand, galaxy cannot deal directly with functions that have an odd callback signature. The best example is `fs.exists` which does not have any error parameter in its callback. You need a special wrapper to deal with such calls:
+
+```
+// the wrapper
+function existsWrapper(path, cb) {
+	fs.exists(path, function(result) { cb(null, result); })
+}
+
+var exists = galaxy.star(existsWrapper);
+var found = yield exists(__dirname + '/README.md');
+```
+
 ## Streams
 
 Galaxy provides a simple API to work with node.js streams. The [galaxy/lib/server/streams](https://github.com/bjouhier/galaxy/blob/master/lib/server/streams.md) module contains wrappers for all the main streams of the node API, as well as generic `ReadableStream` and `WritableStream` wrappers.
