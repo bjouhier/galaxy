@@ -1,7 +1,7 @@
 "use strict";
 
 var galaxy = require('galaxy');
-var streams = require('galaxy/lib/server/streams');
+var streams = require('galaxy-streams');
 
 var bufSize = 100;
 var bufCount = 3;

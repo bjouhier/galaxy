@@ -10,7 +10,7 @@ Let us start with galaxy's version of node's hello world:
 ```javascript
 "use strict";
 var galaxy = require('galaxy');
-var streams = require('galaxy/lib/server/streams');
+var streams = require('galaxy-streams');
 
 var server = streams.createHttpServer(function *(request, response) {
 	response.writeHead(200, {
@@ -46,7 +46,7 @@ Now, we are going to be a bit more ambitious and turn our page into a simple sea
 
 ```javascript
 "use strict";
-var streams = require('galaxy/lib/server/streams');
+var streams = require('galaxy-streams');
 var galaxy = require('galaxy');
 var url = require('url');
 var qs = require('querystring');

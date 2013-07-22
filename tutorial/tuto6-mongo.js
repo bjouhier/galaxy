@@ -1,5 +1,5 @@
 "use strict";
-var streams = require('galaxy/lib/server/streams');
+var streams = require('galaxy-streams');
 var galaxy = require('galaxy');
 var star = galaxy.star;
 var url = require('url');

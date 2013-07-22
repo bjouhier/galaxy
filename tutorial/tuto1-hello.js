@@ -1,6 +1,6 @@
 "use strict";
 var galaxy = require('galaxy');
-var streams = require('galaxy/lib/server/streams');
+var streams = require('galaxy-streams');
 
 var server = streams.createHttpServer(function *(request, response) {
 	response.writeHead(200, {
