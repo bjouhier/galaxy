@@ -1,8 +1,8 @@
 "use strict";
+QUnit.module(module.id);
 // WARNING: DO NOT INSERT COMMENTS OR ANYTHING
 // Line numbers matter to this test!
 
-var module = QUnit.module;
 var galaxy = require('galaxy');
 
 var nextTick = galaxy.star(function (cb){
@@ -132,7 +132,7 @@ var rawStack = new Error().stack ? function(raw) {
 	return "raw stack unavailable";
 }
 
-module("stacks");
+
 
 asyncTest("stacks", 20, galaxy.unstar(function*() {
 	stackEqual(yield T(A, 1, failAsync), rawStack("Error: 1/failAsync:15") + "/A:28");

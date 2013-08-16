@@ -1,5 +1,5 @@
 "use strict";
-QUnit.module(module);
+QUnit.module(module.id);
 var galaxy = require("galaxy");
 
 function* delay(val) {

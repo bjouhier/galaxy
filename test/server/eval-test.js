@@ -1,14 +1,13 @@
 "use strict";
+QUnit.module(module.id);
 // These unit tests are borrowed from streamline.js
 // They are a bit heavy because they test all sorts of variants of basic language constructs (loops, switch, etc.)
 // This comes from streamline where it was important to test the transformation patterns for every contruct.
 // We could trim a bit in the galaxy context because we can rely on the JS engine  
 // but it does not hurt to have these tests so I kept them all.
 
-var module = QUnit.module;
 var galaxy = require('galaxy');
 
-module("galaxy evaluation");
 
 function evalTest(f, val) {
 	galaxy.unstar(f)(function(err, result) {
