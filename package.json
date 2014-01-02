@@ -1,12 +1,12 @@
 {
   "name": "galaxy",
   "description": "Cosmic harmony with callbacks and generators",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "repository": {
     "type": "git",
     "url": "git://github.com/bjouhier/galaxy.git"
   },
-  "engines": { "node": ">=0.11.2" },
+  "engines": { "node": ">=0.11.10" },
   "dependencies": {},
   "author": "Bruno Jouhier",
   "directories": {"lib": "./lib" },

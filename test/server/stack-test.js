@@ -110,7 +110,7 @@ function* T(fn, code, failFn){
 	} 
 	catch (ex) {
 		var s = ex.stack;
-		s = s.substring(0, s.indexOf('\n    <<< raw') + 1);
+		s = s.substring(0, s.indexOf('\n  <<< raw') + 1);
 		s = s.split('\n').filter(function(l) { return l.indexOf('<<<') < 0; }).map(function(l){
 			var m = /^\s+at (\w+).*:(\d+)\:[^:]+$/.exec(l);
 			if (m) 
