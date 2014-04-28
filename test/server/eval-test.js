@@ -683,4 +683,14 @@ asyncTest("labelled break", 1, function() {
 		}
 		return result;
 	}, '!15-!16-!/!25-!26-!/!35-!36-!!38-!39-/!45-!46-!!55-!56-!');
-})
+});
+
+asyncTest("arity of future", 2, function() {
+	function* foo() { return "hello"; }
+
+	galaxy.unstar(galaxy.spin(foo()))(function(e, r) {
+		strictEqual(e, null);
+		strictEqual(r, "hello");
+		start();
+	});
+});
