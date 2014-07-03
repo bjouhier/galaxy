@@ -193,7 +193,7 @@ var found = yield exists(__dirname + '/README.md');
 
 ## Streams
 
-Galaxy provides a simple API to deal with node.js streams. This API is packaged as a separate [galaxy-streams](https://github.com/bjouhier/galaxy-streams) package.
+Galaxy works with [ez-streams](https://github.com/Sage/ez-streams), a simple streaming API for node.js.
 
 ## Asynchronous constructor
 
