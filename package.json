@@ -1,7 +1,7 @@
 {
   "name": "galaxy",
   "description": "Cosmic harmony with callbacks and generators",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "repository": {
     "type": "git",
     "url": "git://github.com/bjouhier/galaxy.git"
