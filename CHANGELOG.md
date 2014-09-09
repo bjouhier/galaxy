@@ -8,7 +8,10 @@ Old history
 1014-06-02
 ???
 
-## v0.1.8
+## v0.1.8 and v0.1.9
+failed to publish (proxy problems)
+
+## v0.1.10
 2014-09-09
 * [#11](https://github.com/bjouhier/galaxy/issues/11): API trick: eliminate callback parameter with negative star index (needed by [ez-streams](https://github.com/Sage/ez-streams))
 * [#12](https://github.com/bjouhier/galaxy/issues/12): parallelizing with `yield [fn1(), fn2()]` (needs a bit more work)
