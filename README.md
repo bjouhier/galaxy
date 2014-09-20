@@ -191,6 +191,24 @@ var exists = galaxy.star(existsWrapper);
 var found = yield exists(__dirname + '/README.md');
 ```
 
+## Interrupting a future
+
+Futures can be made interruptible by passing an `interrupt` option to the `galaxy.spin` call:
+
+```javascript
+var fut = galaxy.spin(asyncFn(), {
+	interrupt: function() {
+		if (interruptRequested) return true;
+	});
+
+// somewhere else
+// this yield will never return if fut is interrupted (see note below)
+var result = yield fut();
+
+```
+
+Note: this feature is very experimental. It could be enhanced to throw an exception into the code which is yielding on the future but it is not clear whether this should bypass or not the catch/finally clauses that may be active on the future's stack.
+
 ## Streams
 
 Galaxy works with [ez-streams](https://github.com/Sage/ez-streams), a simple streaming API for node.js.
