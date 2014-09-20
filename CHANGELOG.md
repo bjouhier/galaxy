@@ -1,15 +1,6 @@
-## v0.1.0
-First brew
-
-## v0.1.1 - 0.1.6
-Old history
-
-## v0.1.7
-1014-06-02
-???
-
-## v0.1.8 and v0.1.9
-failed to publish (proxy problems)
+## v0.1.11
+2014-09-20
+* [#18](https://github.com/bjouhier/galaxy/issues/18): Experimental interrupt feature.
 
 ## v0.1.10
 2014-09-09
@@ -18,6 +9,16 @@ failed to publish (proxy problems)
 * [#14](https://github.com/bjouhier/galaxy/issues/14): flamegraph hooks (for https://github.com/Sage/streamline-flamegraph)
 * [#15](https://github.com/bjouhier/galaxy/issues/15): reentrancy problem with 2 loops
 
-## v0.1.11
-2014-09-20
-* [#18](https://github.com/bjouhier/galaxy/issues/11): Experimental interrupt feature.
+## v0.1.8 and v0.1.9
+failed to publish (proxy problems)
+
+## v0.1.7
+1014-06-02
+???
+
+## v0.1.1 - 0.1.6
+Old history
+
+## v0.1.0
+First brew
+
